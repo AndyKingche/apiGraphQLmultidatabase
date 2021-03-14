@@ -1,0 +1,145 @@
+type Usuarios {
+    id: String!
+    nombre: String!
+    email: String!
+    nickname: String!
+    login: String!
+    password: String!
+    "Masculino: 'M' o Femenino: 'F'"
+    genero:String!
+}
+input UsuarioInput {
+    nombre: String!
+    email: String!
+    nickname: String!
+    login: String!
+    password: String!
+    "Masculino: 'M' o Femenino: 'F'"
+    genero:String!
+}
+input UsuarioEdit {
+    nombre: String
+    email: String
+    nickname: String
+    login: String
+    password: String
+    "Masculino: 'M' o Femenino: 'F'"
+    genero:String
+}
+type Comentarios{
+    id:String!
+    contenido: String!
+    usuariosid:[Usuarios]
+    postsid:[PostsComentario]
+}
+type ComentariosPost{
+    id:String!
+    contenido: String!
+    usuariosid:[Usuarios]
+}
+input ComentarioInput{
+    contenido: String!
+    usuariosid:String!
+    postsid:String!
+}
+input ComentarioEdit{
+    contenido: String
+}
+type Categorias{
+    id:String!
+    nombre_categoria:String!
+}
+input CategoriaInput{
+    nombre_categoria:String!
+}
+input CategoriaEdit{
+    nombre_categoria:String
+}
+
+type Posts{
+    id:String!
+    titulo:String!
+   "formato de fecha:  año - mes - dia "
+    fecha_publicacion: String!
+    contenido:String!
+    keywords:String!
+    estado:Boolean!
+    categoriasid:[Categorias]
+    comentarios:[ComentariosPost]
+    usuariosid:[Usuarios]
+}
+type PostsComentario{
+    id:String!
+    titulo:String!
+    "formato de fecha: mes - dia - año"
+    fecha_publicacion: String!
+    contenido:String!
+    keywords:String!
+    estado:Boolean!
+    categoriasid:[Categorias]
+    usuariosid:[Usuarios]
+}
+input PostInput{
+    titulo:String!
+    "formato de fecha:  año - mes - dia "
+    fecha_publicacion: String!
+    contenido:String!
+    keywords:String!
+    estado:Boolean!
+    categoriasid:String!
+    usuariosid:String!
+}
+input PostEdit{
+    titulo:String
+   "formato de fecha:  año - mes - dia "
+    fecha_publicacion: String
+    estado:Boolean
+    contenido:String
+    keywords:String
+    categoriasid:String
+}
+
+type Query{
+    "Devuelve todos los Usuarios"
+    getUsuarios(limit:Int):[Usuarios]
+    "Devuelve un solo Usuario, el que ud defina"
+    getUsuario(id:String!):Usuarios
+    "Devuelve todas las Categorias"
+    getCategorias:[Categorias]
+    "Devuelve una sola categoria, el que ud defina"
+    getCategoria(id:String!):Categorias
+    "Devuelve todos los comentarios"
+    getComentarios(limit:Int):[Comentarios]
+    "Devuelve un solo comentario, la que ud defina"
+    getComentario(id:String!):Comentarios
+    "Devuelve todos los posts"
+    getPosts(limit:Int):[Posts]
+    "Devuelve un solo post, la que ud defina"
+    getPost(id:String!):Posts  
+}
+type Mutation{
+    "Crear un Usuario"
+    createUsuario(input: UsuarioInput!):Usuarios
+    "Editar un Usuario"
+    editUsuario(id:String!, input:UsuarioEdit!):Usuarios
+    "Eliminar un Usuario"
+    deleteUsuario(id:String!):Usuarios
+    "Crear una Categoria"
+    createCategoria(input: CategoriaInput!):Categorias
+    "Editar una Categoria"
+    editCategoria(id:String!, input: CategoriaEdit!):Categorias
+    "Eliminar una categoria"
+    deleteCategoria(id:String!):Categorias
+    "Crear un Comentario"
+    createComentario(input: ComentarioInput!):Comentarios
+    "Editar un Comentario"
+    editComentario(id:String!, input:ComentarioEdit!):Comentarios
+    "Eliminar un Comentario"
+    deleteComentario(id:String!):Comentarios
+    "Crear un Post"
+    createPost(input: PostInput!): Posts
+    "Editar un Post"
+    editPost(id:String!,input:PostEdit!):Posts
+    "Eliminar un Post"
+    deletePost(id:String!):Posts
+    }

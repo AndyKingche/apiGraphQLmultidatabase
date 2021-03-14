@@ -1,0 +1,187 @@
+type Usuarios {
+    id: Int! 
+    nombre: String!
+    email: String!
+    nickname: String!
+    login: String!
+    password: String!
+    "Masculino: 'M' o Femenino: 'F'"
+    genero:String!
+}
+input UsuarioInput {
+    nombre: String!
+    email: String!
+    nickname: String!
+    login: String!
+    password: String!
+    "Masculino: 'M' o Femenino: 'F'"
+    genero:String!
+}
+input UsuarioEdit {
+    nombre: String
+    email: String
+    nickname: String
+    login: String
+    password: String
+    "Masculino: 'M' o Femenino: 'F'"
+    genero:String
+}
+
+type Comentarios{
+    id:Int!
+    contenido: String!
+    usuariosid:[Usuarios]
+    postsid:[PostsComentario]
+}
+type ComentariosPost{
+    id:Int!
+    contenido: String!
+    usuariosid:[Usuarios]
+}
+input ComentarioInput{
+    contenido: String!
+    usuariosid:Int!
+    postsid:Int!
+}
+input ComentarioEdit{
+    contenido: String
+}
+type Categorias{
+    id:Int!
+    nombre_categoria:String!
+}
+input CategoriaInput{
+    nombre_categoria:String!
+}
+input CategoriaEdit{
+    nombre_categoria:String
+}
+type Etiquetas{
+    id:Int!
+    nombre_etiqueta:String!
+
+}
+input EtiquetaInput{
+    nombre_etiqueta:String!
+
+}
+input EtiquetaEdit{
+    nombre_etiqueta:String
+}
+
+type Posts{
+    id:Int!
+    titulo:String!
+    "formato de fecha: mes - dia - año"
+    fecha_publicacion: String!
+    contenido:String!
+    keywords:String!
+    estado:Boolean!
+    categoriasid:[Categorias]
+    comentarios:[ComentariosPost]
+    usuariosid:[Usuarios]
+}
+type PostsComentario{
+    id:Int!
+    titulo:String!
+    "formato de fecha: mes - dia - año"
+    fecha_publicacion: String!
+    contenido:String!
+    keywords:String!
+    estado:Boolean!
+    categoriasid:[Categorias]
+    usuariosid:[Usuarios]
+}
+input PostInput{
+    titulo:String!
+    "formato de fecha:  mes - dia - año"
+    fecha_publicacion: String!
+    contenido:String!
+    keywords:String!
+    estado:Boolean! 
+    categoriasid:Int!
+    usuariosid:Int!
+}
+input PostEdit{
+    titulo:String
+    "formato de fecha:  mes - dia - año"
+    fecha_publicacion: String
+    estado:Boolean
+    contenido:String
+    keywords:String
+    categoriasid:Int
+}
+type PostEtiquetas{
+    idetiqueta:[Etiquetas]
+    idpost:[Posts]
+}
+input PostEtiquetaInput{
+    idetiqueta:Int!
+    idpost:Int!
+}
+input PostEtiquetaEdit{
+    idetiqueta:Int
+    idpost:Int
+}
+type Query{
+    "Devuelve todos los Usuarios"
+    getUsuarios(limit:Int,nombre:String):[Usuarios]
+    "Devuelve un solo Usuario, el que ud defina"
+    getUsuario(id:Int!):Usuarios
+    "Devuelve todas las Categorias"
+    getCategorias(limit:Int):[Categorias]
+    "Devuelve una sola categoria, el que ud defina"
+    getCategoria(id:Int!):Categorias
+    "Devuelve todas las Etiquetas"
+    getEtiquetas:[Etiquetas]
+    "Devuelve una sola Etiqueta, la que ud defina"
+    getEtiqueta(id:Int!):Etiquetas
+    "Devuelve todos los comentarios"
+    getComentarios(limit:Int):[Comentarios]
+    "Devuelve un solo comentario, la que ud defina"
+    getComentario(id:Int!):Comentarios
+    "Devuelve todos los posts"
+    getPosts(limit:Int):[Posts]
+    "Devuelve un solo post, la que ud defina"
+    getPost(id:Int!):Posts
+    "Devuelve todos los Post etiquetas"
+    getPostEtiquetas:[PostEtiquetas]
+    "Devuelve un solo Post Etiqueta por id"
+    getPostEtiqueta(id:Int!):PostEtiquetas
+}
+type Mutation{
+    "Crear un Usuario"
+    createUsuario(input: UsuarioInput!):Usuarios
+    "Editar un Usuario"
+    editUsuario(id:Int!, input:UsuarioEdit!):Usuarios
+    "Eliminar un Usuario"
+    deleteUsuario(id:Int!):Usuarios
+    "Crear una Categoria"
+    createCategoria(input: CategoriaInput!):Categorias
+    "Editar una Categoria"
+    editCategoria(id:Int!, input: CategoriaEdit!):Categorias
+    "Eliminar una categoria"
+    deleteCategoria(id:Int!):Categorias
+    "Crear una Etiqueta"
+    createEtiqueta(input: EtiquetaInput!):Etiquetas
+    "Editar una etiqueta"
+    editEtiqueta(id:Int!, input: EtiquetaEdit!):Etiquetas
+    "Eliminar una etiqueta"
+    deleteEtiqueta(id:Int!):Etiquetas
+    "Crear un Comentario"
+    createComentario(input: ComentarioInput!):Comentarios
+    "Editar un Comentario"
+    editComentario(id:Int!, input:ComentarioEdit!):Comentarios
+    "Eliminar un Comentario"
+    deleteComentario(id:Int!):Comentarios
+    "Crear un Post"
+    createPost(input: PostInput!): Posts
+    "Editar un Post"
+    editPost(id:Int!,input:PostEdit!):Posts
+    "Eliminar un Post"
+    deletePost(id:Int!):Posts
+    "Crear un Post Etiqueta"
+    createPostEtiqueta(input: PostEtiquetaInput ): PostEtiquetas
+    "Editar un Post Etiqueta"
+    editPostEtiqueta(id1:Int!,id2:Int!):PostEtiquetas
+    }

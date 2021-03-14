@@ -1,0 +1,47 @@
+{
+  "name": "api-graphqlfinal",
+  "version": "1.0.0",
+  "description": "Esta Api es parte de la tesis de grado",
+  "main": "index.js",
+  "scripts": {
+    "serve": "node --max-old-space-size=8192 src/index.js",
+    "dev": "nodemon -e js, graphql src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "api",
+    "graphql",
+    "SQL",
+    "NoSQL"
+  ],
+  "author": "Andres Quinche",
+  "license": "ISC",
+  "dependencies": {
+    "cassandra-driver": "^4.6.1",
+    "cors": "^2.8.5",
+    "dataloader": "^2.0.0",
+    "dataloader-sequelize": "^2.3.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-cassandra": "^2.5.0",
+    "express-graphql": "^0.12.0",
+    "graphql": "^15.5.0",
+    "graphql-redis-subscriptions": "^2.3.1",
+    "graphql-tools": "^7.0.4",
+    "ioredis": "^4.23.0",
+    "mariadb": "^2.5.3",
+    "mongodb": "^3.6.4",
+    "mysql2": "^2.2.5",
+    "p-limit": "^3.1.0",
+    "pg": "^8.5.1",
+    "pg-hstore": "^2.3.3",
+    "rate-limit-redis": "^2.1.0",
+    "redis": "^3.0.2",
+    "sequelize": "^6.5.0",
+    "sequelize-paginate": "^1.1.6",
+    "tedious": "^11.0.5"
+  },
+  "devDependencies": {
+    "standard": "^16.0.3"
+  }
+}
