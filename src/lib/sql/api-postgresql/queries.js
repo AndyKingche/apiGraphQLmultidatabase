@@ -55,11 +55,12 @@ module.exports ={
     getCategorias: async(root,{limit}) => {
         let categorias=[]
         try{
-            categorias = await categorias.findAll({
+        
+            categorias = await db.categorias.then(res=> res.findAll({
                 limit: limit,
                 offset: 0,
                 where: { }}, // conditions
-                )
+                ))
                 context.prime(categorias)
             return categorias
         }catch(error){
@@ -86,6 +87,7 @@ module.exports ={
     },
     getComentarios: async(root,{limit}) => {
         //let startTime =  hrtime (); 
+        //limit = limit !=null ? limit :0
         let comentarios = []
         try {
 
@@ -93,12 +95,12 @@ module.exports ={
              comentarios = await db.comentarios.then(res => res.findAll({
                 limit:limit,
                 offset:0,
-                where:{}
+                where: { }
             }))
+            //console.log(comentarios)
             //let endtime = hrtime();
             //console.log("numero de datos,", (endtime - startTime)) 
-            context.prime(comentarios)   
-            
+            context.prime(comentarios)      
             return comentarios
         } catch (error) {
             console.log("Error al realizar el Get Comentarios")

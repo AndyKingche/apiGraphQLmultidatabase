@@ -50,7 +50,7 @@ const loaderComentarios = new DataLoader(values => {
     const comment = values.map((id)=>{
     return db.comentarios.then(res=>res.findAll({where:{postsid:id}}))
   } )
-  return Promise.resolve(comment)
+  return Promise.all(comment)
 });
   
 module.exports={

@@ -168,6 +168,7 @@ module.exports = {
             if(usuariosid!=null && categoriasid!=null){
                 newPost.created_at = fechaHoy();
                 post = await crearModelo(db.posts,newPost)
+                console.log("estascreando",post)
                 newPost.id = post.id
             }else{
                 console.log("No existe el usuario o no existe la categoria")

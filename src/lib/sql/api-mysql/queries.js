@@ -54,7 +54,7 @@ module.exports ={
     getCategorias: async(root,{limit}) => {
         let categorias=[]
         try{
-            categorias = await categorias.findAll({
+            categorias = await db.categorias.findAll({
                 limit: limit,
                 offset: 0,
                 where: { }}, // conditions
@@ -92,6 +92,7 @@ module.exports ={
                 offset:0,
                 where:{}
             }))
+            console.log(comentarios)
            // let endtime = hrtime();
             //console.log("numero de datos,", (endtime - startTime)) 
             context.prime(comentarios)   
@@ -103,6 +104,7 @@ module.exports ={
     },
     getComentario: async(root, {id}) => {
         let comentario
+        console.log(id)
         try {
             
             comentario = await  db.sequelize.query("SELECT * FROM comentarios Where id=:id",{
@@ -111,8 +113,9 @@ module.exports ={
                 replacements: { id:id }
               })
             comentario = comentario != null ? comentario : []
-            context.prime(comentario[0])  
+            
             return comentario[0]
+           
         } catch (error) {
             console.log("Error al realizar Get Comentario por id")
             errores(error)
@@ -151,7 +154,7 @@ module.exports ={
                 replacements: { id:id }
               })
             post = post != null ? post : []
-            context.prime(post[0])
+            
             return post[0]
         } catch (error) {
             console.log("Error al realizar get Post por id")

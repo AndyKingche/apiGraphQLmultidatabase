@@ -48,7 +48,7 @@ const { //aqui ubicamos las variables que se creo en el archivo donde se puso la
     define: {},
     dialectOptions: {
       options: {
-        requestTimeout: 90000000
+        requestTimeout: 60000000
       }
     },
     pool: {
@@ -66,7 +66,7 @@ const { //aqui ubicamos las variables que se creo en el archivo donde se puso la
     define: {},
     dialectOptions: {
       options: {
-        requestTimeout: 60000000
+        requestTimeout: 90000000
       }
     },
     pool: {
@@ -77,19 +77,19 @@ const { //aqui ubicamos las variables que se creo en el archivo donde se puso la
     },
     logging:false
   })
-  const models={
+  const models={//mysql
     usuarios: model.Usuario(sequelize),
     comentarios:model.Comentario(sequelize),
     categorias:model.Categoria(sequelize),
     posts:model.Post(sequelize)
   }
-  const models2={
+  const models3={//postgressql
     usuarios: model.Usuario(sequelize3),
     comentarios:model.Comentario(sequelize3),
     categorias:model.Categoria(sequelize3),
     posts:model.Post(sequelize3)
   }
-  const models3={
+  const models2={//mssql
     usuarios: model.Usuario(sequelize2),
     comentarios:model.Comentario(sequelize2),
     categorias:model.Categoria(sequelize2),
@@ -132,7 +132,7 @@ function connectDBmssql(){
             console.log('La conexion se ha establecido con exito',sequelize2.options.dialect);
             models2.sequelize2 = sequelize2
             models2.Sequelize = Sequelize    
-            return models
+            return models2
           } catch (error) {
               
             console.error('Imposible conectar con la base de datos:');
@@ -156,7 +156,7 @@ function connectDBpg(){
             console.log('La conexion se ha establecido con exito',sequelize3.options.dialect);
             models3.sequelize3 = sequelize3
             models3.Sequelize = Sequelize    
-            return models
+            return models3
           } catch (error) {
               
             console.error('Imposible conectar con la base de datos:');
