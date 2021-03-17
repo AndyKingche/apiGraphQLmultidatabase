@@ -1,11 +1,11 @@
 'use strict'
 const { Logger, MongoClient } = require('mongodb')
 const { //aqui ubicamos las variables que se creo en el archivo donde se puso las variables de entorno
-DB_USER,
-DB_PASSWD,
-DBmongodb_HOST,
-DBmongodb_PORT,
-DBmongodb_NAME,
+    DBmongodb_USER,
+    DBmongodb_PASSWD,
+    DBmongodb_HOST,
+    DBmongodb_PORT,
+    DBmongodb_NAME,
 
 }=process.env
 
@@ -22,7 +22,8 @@ let client // la variable client es aquella que recibira la conexion
 try {
     client = await new MongoClient.connect(mongoUrl,{
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        poolSize: 5000000
     });
     connection = await client.db(DBmongodb_NAME)
 } catch (error) {
@@ -38,5 +39,13 @@ const getNameCollection= async(getNameCollection)=>{
     const db = (await connectDB())
     return db.collection(getNameCollection)
 }
-module.exports = {mongodb:getNameCollection}
+const mongo = {
+    user:getNameCollection('usuarios'),
+    category:getNameCollection('categorias'),
+    posts:getNameCollection('posts'),
+    comentarios: getNameCollection('posts')
+}
+module.exports = {mongodb:getNameCollection,
+    modelo: mongo
+}
 
