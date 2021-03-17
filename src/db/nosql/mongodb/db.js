@@ -1,15 +1,23 @@
 'use strict'
 const { Logger, MongoClient } = require('mongodb')
 const { //aqui ubicamos las variables que se creo en el archivo donde se puso las variables de entorno
+<<<<<<< HEAD
     DBmongodb_USER,
     DBmongodb_PASSWD,
     DBmongodb_HOST,
     DBmongodb_PORT,
     DBmongodb_NAME,
+=======
+DB_USER,
+DB_PASSWD,
+DB_HOST,
+DB_PORT,
+DB_NAME,
+>>>>>>> 7f4b4f906db2c0602b4616f1d7c251855bbab7d6
 
 }=process.env
 
-const mongoUrl = ` mongodb://${DBmongodb_HOST}:${DBmongodb_PORT}/${DBmongodb_NAME}` //la cadena de conexion
+const mongoUrl = ` mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}` //la cadena de conexion
 
 //`mongodb+srv://${DB_USER}:${DB_PASSWD}@${DB_HOST}/${DB_NAME}?retryWrites=true&w=majority`
 let connection // creamos una variable donde se podra la conexion a la base de datos
@@ -25,7 +33,7 @@ try {
         useUnifiedTopology: true,
         poolSize: 5000000
     });
-    connection = await client.db(DBmongodb_NAME)
+    connection = await client.db(DB_NAME)
 } catch (error) {
     console.log('No se pudo conectar a la base de datos de mongo', mongoUrl, error)
         process.exit(1)   // sis que no se pudo conectar se eliminara el proceso.
