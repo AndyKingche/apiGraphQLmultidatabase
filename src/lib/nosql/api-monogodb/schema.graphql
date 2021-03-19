@@ -26,6 +26,17 @@ input UsuarioEdit {
      "Masculino: 'M' o Femenino: 'F'"
     genero:String!
 }
+type UsuariosComentarios{
+     _id: ID!
+    nombre: String!
+    email: String!
+    nickname: String!
+    login: String!
+    password: String!
+     "Masculino: 'M' o Femenino: 'F'"
+    genero:String!
+    comentarios:[ComentariosUsuarios]
+}
 
 type Comentarios{
     _id:ID!
@@ -37,6 +48,11 @@ type ComentariosPost{
     _id:ID!
     contenido: String!
     usuariosid:[Usuarios]
+}
+type ComentariosUsuarios{
+    _id:ID!
+    contenido: String!
+    postsid:[PostsComentario]
 }
 input ComentarioInput{
     contenido: String!
@@ -150,6 +166,8 @@ type Query{
     getPostEtiquetas:[PostEtiquetas]
     "Devuelve un solo Post Etiqueta por id"
     getPostEtiqueta(id:ID!):PostEtiquetas
+    "Devuelve todos los comentarios que hizo el usuario"
+    getUsuarioComentarios(limit:Int):[UsuariosComentarios]
 }
 
 type Mutation{

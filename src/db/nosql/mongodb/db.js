@@ -9,7 +9,7 @@ const { //aqui ubicamos las variables que se creo en el archivo donde se puso la
 
 }=process.env
 
-const mongoUrl = ` mongodb://${DBmongodb_HOST}:${DBmongodb_PORT}/${DBmongodb_NAME}` //la cadena de conexion
+const mongoUrl = ` mongodb://${DBmongodb_HOST}:${DBmongodb_PORT}/${DBmongodb_NAME}?socketTimeoutMS=90000` //la cadena de conexion
 
 //`mongodb+srv://${DB_USER}:${DB_PASSWD}@${DB_HOST}/${DB_NAME}?retryWrites=true&w=majority`
 let connection // creamos una variable donde se podra la conexion a la base de datos
@@ -18,12 +18,16 @@ if(connection) // sis que esta declarada
 {
     return connection
 }
+
 let client // la variable client es aquella que recibira la conexion 
 try {
     client = await new MongoClient.connect(mongoUrl,{
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        poolSize: 5000000
+        socketTimeoutMS: 4500000,
+  keepAlive: true,
+  connectTimeoutMS: 60000000
+  
     });
     connection = await client.db(DBmongodb_NAME)
 } catch (error) {
@@ -43,7 +47,7 @@ const mongo = {
     user:getNameCollection('usuarios'),
     category:getNameCollection('categorias'),
     posts:getNameCollection('posts'),
-    comentarios: getNameCollection('posts')
+    comentarios: getNameCollection('comentarios')
 }
 module.exports = {mongodb:getNameCollection,
     modelo: mongo

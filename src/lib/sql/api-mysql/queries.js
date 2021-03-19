@@ -92,7 +92,6 @@ module.exports ={
                 offset:0,
                 where:{}
             }))
-            console.log(comentarios)
            // let endtime = hrtime();
             //console.log("numero de datos,", (endtime - startTime)) 
             context.prime(comentarios)   

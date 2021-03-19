@@ -59,9 +59,8 @@ module.exports = {
         let comentarios = []
         limit = limit!= null ? limit : 0
         try {
-            comentarios = db('comentarios')
-            comentarios = await Promise.resolve(comentarios)
-            comentarios = comentarios.find().limit(limit).toArray()   
+            
+            comentarios = modelo.comentarios.then(comentarios => comentarios.find().limit(limit).toArray())
             return comentarios
         } catch (error) {
             console.log("Error al realizar el Get Comentarios")
@@ -102,5 +101,18 @@ module.exports = {
             errores(error)
             
         }
+    },getUsuarioComentarios: async(root,{limit}) => {
+        let posts = []
+        limit = limit != null ? limit : 0
+        try {
+            //posts = modelo.posts.then(posts => posts.find().limit(limit).toArray())
+            return  modelo.user.then(usuarios => usuarios.find().limit(limit).toArray())
+            
+        } catch (error) {
+            console.log("Error al realizar Get Posts")
+            errores(error)
+            
+        }
+
     }
 }

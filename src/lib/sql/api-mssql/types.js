@@ -9,18 +9,18 @@ let db = mssql
 const context = createContext(db.sequelize2)
 module.exports = {
     Comentarios :{
-        usuariosid:async ( {usuariosid} )=>  Array(dataloaderUsuarios.load(usuariosid)),
-        postsid:async({postsid}) => Array(dataloaderPosts.load(postsid))
+        usuariosid:async ( {usuariosid} )=>  dataloaderUsuarios.load(usuariosid),
+        postsid:async({postsid}) => dataloaderPosts.load(postsid)
     },
     Posts:{
-        categoriasid: async ( {categoriasid} ) => Array(dataloaderCategoria.load(categoriasid)),
+        categoriasid: async ( {categoriasid} ) => dataloaderCategoria.load(categoriasid),
         comentarios: async ( {id} ) => dataloaderComentarios.load(id),  
-        usuariosid: async ( {usuariosid} ) => Array(dataloaderUsuarios.load(usuariosid)),
+        usuariosid: async ( {usuariosid} ) => dataloaderUsuarios.load(usuariosid),
     },
     PostsComentario:{
-        categoriasid: async ( {categoriasid} ) => Array(dataloaderCategoria.load(categoriasid)),
-        usuariosid: async ( {usuariosid} ) =>Array(dataloaderUsuarios.load(usuariosid))
+        categoriasid: async ( {categoriasid} ) => dataloaderCategoria.load(categoriasid),
+        usuariosid: async ( {usuariosid} ) =>dataloaderUsuarios.load(usuariosid)
     },ComentariosPost :{
-        usuariosid: async({ usuariosid }) => Array(dataloaderUsuarios.load(usuariosid))
+        usuariosid: async({ usuariosid }) => dataloaderUsuarios.load(usuariosid)
     }
 }

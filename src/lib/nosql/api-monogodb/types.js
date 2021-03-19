@@ -1,21 +1,28 @@
 'use strict'
-const { dataloaderUsuarios, dataloaderPosts, dataloaderCategoria,dataloaderComentarios } = require('./dataloader-mongodb')
+const { dataloaderUsuarios, dataloaderPosts, dataloaderCategoria,dataloaderComentarios,dataloaderUsuariosComentarios } = require('./dataloader-mongodb')
 module.exports = {
     Comentarios :{
         usuariosid: async({ usuariosid }) => 
-        await Array(dataloaderUsuarios.load(usuariosid)),
-        postsid:async({postsid})=> await Array(dataloaderPosts.load(postsid))
+        await dataloaderUsuarios.load(usuariosid),
+        postsid:async({postsid})=> await dataloaderPosts.load(postsid)
      }
     ,ComentariosPost :{
-        usuariosid: async({ usuariosid }) => await Array(dataloaderUsuarios.load(usuariosid))
+        usuariosid: async({ usuariosid }) => await dataloaderUsuarios.load(usuariosid)
     },
     Posts:{
-        categoriasid: async ( {categoriasid} ) => await Array(dataloaderCategoria.load(categoriasid)),
-        usuariosid: async ( {usuariosid} ) => await Array(dataloaderUsuarios.load(usuariosid)),
-        comentarios: async ({_id}) => await Array(dataloaderComentarios.load(_id))
+        categoriasid: async ( {categoriasid} ) => await dataloaderCategoria.load(categoriasid),
+        usuariosid: async ( {usuariosid} ) => await dataloaderUsuarios.load(usuariosid),
+        comentarios: async ({_id}) => await dataloaderComentarios.load(_id)
     },
     PostsComentario:{
-        categoriasid: async ( {categoriasid} ) => await Array(dataloaderCategoria.load(categoriasid)),
-        usuariosid: async ( {usuariosid} ) => await Array(dataloaderUsuarios.load(usuariosid))
-}
+        categoriasid: async ( {categoriasid} ) => await dataloaderCategoria.load(categoriasid),
+        usuariosid: async ( {usuariosid} ) => await dataloaderUsuarios.load(usuariosid)
+    },
+    UsuariosComentarios:{
+        comentarios: async({_id})=> await dataloaderUsuariosComentarios.load(_id),
+        
+    }
+    ,ComentariosUsuarios:{
+        postsid:async({postsid})=> await dataloaderPosts.load(postsid)
+    }
 }
