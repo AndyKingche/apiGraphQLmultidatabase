@@ -5,17 +5,13 @@ const { //aqui ubicamos las variables que se creo en el archivo donde se puso la
     DBredis_PORT,  
     }=process.env
 
-class  RedisConnection {
+let client = new redis({
+    host: `${DBredis_HOST}`,
+    port: `${DBredis_PORT}`
+});
 
-    constructor(){
-        this.client = this.connect()
-    }
-    connect(){
-        let client = new redis({
-            host: `${DBredis_HOST}`,
-            port: `${DBredis_PORT}`
-        });
-
+function RedisConnection() {
+ 
         client.on("connect", ()=> {
             console.log("Conectado a Redis")
         });
@@ -23,27 +19,62 @@ class  RedisConnection {
         client.on("erros", err =>{
             console.log(`Redis error: ${err} `)
         });
-        return client;
-    }
-
-    async get(key){
-        return await this.client.hgetall(key);
-    }
-    async getId(key){
-        console.log("key", key)
-        return await this.client.exists(key);
-    }
-    async set(key, value){
-        return await this.client.hmset(key, value)
-    }
-    async getkeys(key){
-        return await this.client.keys(key);
-    }
-    async delete(key){
-        return await this.client.del(key);
-    }
-
+        return client
 }
+async function get(key){
+    return await client.hgetall(key);
+}
+async function getId(key){
+    //console.log("key", key)
+    return await client.exists(key);
+}
+async function set(key, value){
+    return await client.hmset(key, value)
+}
+async function getkeys(key){
+    return await client.keys(key);
+}
+async function delethe(key){
+    return await client.del(key);
+}
+async function getcomentarios(){
+    let comentarios = []
+  let comentariosKey = await client.keys('com.*')
+ 
+  comentariosKey.map(element => {
+            
+           comentarios.push(client.hgetall(element))
+       })
+  comentarios = await Promise.all(comentarios)
+  return comentarios
+}
+let comentarios = getcomentarios()
+async function getINcomentarios(Ids){
+    try {
+        let x = Ids.map(async(id) =>{ 
+            
+            return await comentarios.then(
+                res=> res.filter(comment=>
+                    comment.postsid == id
+                ))
+        }
+        )
+        return x
+        
+    } catch (error) {
+        console.log(error)
+    }
+  
+         
+}
+module.exports = {
+    RedisConnection:RedisConnection,
+    get:get,
+    getId:getId,
+    set:set,
+    getkeys:getkeys,
+    deletes:delethe,
+    getINcomentarios:getINcomentarios
 
-module.exports = RedisConnection;
+};
     

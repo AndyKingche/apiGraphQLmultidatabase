@@ -5,6 +5,8 @@ type Usuarios {
     nickname: String!
     login: String!
     password: String!
+    "Masculino: 'M' o Femenino: 'F'"
+    genero: String
 }
 input UsuarioInput {
     nombre: String!
@@ -12,6 +14,8 @@ input UsuarioInput {
     nickname: String!
     login: String!
     password: String!
+    "Masculino: 'M' o Femenino: 'F'"
+    genero: String
 }
 input UsuarioEdit {
     nombre: String
@@ -19,9 +23,17 @@ input UsuarioEdit {
     nickname: String
     login: String
     password: String
+    "Masculino: 'M' o Femenino: 'F'"
+    genero: String
 }
 
 type Comentarios{
+    id:String!
+    contenido: String!
+    usuariosid:[Usuarios]
+    postsid:[PostsComentario]
+}
+type ComentariosPost{
     id:String!
     contenido: String!
     usuariosid:[Usuarios]
@@ -29,10 +41,11 @@ type Comentarios{
 input ComentarioInput{
     contenido: String!
     usuariosid:String!
+    postsid:String!
 }
 input ComentarioEdit{
     contenido: String
-    usuariosid:String
+    
 }
 type Categorias{
     id:String!
@@ -44,84 +57,73 @@ input CategoriaInput{
 input CategoriaEdit{
     nombre_categoria:String
 }
-type Etiquetas{
-    id:String!
-    nombre_etiqueta:String!
-
-}
-input EtiquetaInput{
-    nombre_etiqueta:String!
-
-}
-input EtiquetaEdit{
-    nombre_etiqueta:String
-}
 
 type Posts{
     id:String!
     titulo:String!
     "formato de fecha: mes - dia - año"
     fecha_publicacion: String!
+    contenido:String!
+    keywords:String!
+    "true or false"
     estado:String!
     categoriasid:[Categorias]
-    comentarioid:[Comentarios]
+    comentarios:[ComentariosPost]
+    usuariosid:[Usuarios]
+}
+type PostsComentario{
+    id:String!
+    titulo:String!
+    "formato de fecha: mes - dia - año"
+    fecha_publicacion: String!
+    contenido:String!
+    keywords:String!
+    "true or false"
+    estado:Boolean!
+    categoriasid:[Categorias]
     usuariosid:[Usuarios]
 }
 input PostInput{
     titulo:String!
     "formato de fecha:  mes - dia - año"
     fecha_publicacion: String!
+    contenido:String!
+    keywords:String!
+    "true or false"
     estado:String!
     categoriasid:String!
-    comentarioid:String!
     usuariosid:String!
 }
 input PostEdit{
     titulo:String
     "formato de fecha:  mes - dia - año"
     fecha_publicacion: String
+    contenido:String
+    keywords:String
+    "true or false"
     estado:String
     categoriasid:String
-    comentarioid:String
-    usuariosid:String
+    
 }
-type PostEtiquetas{
-    idetiqueta:[Etiquetas]
-    idpost:[Posts]
-}
-input PostEtiquetaInput{
-    idetiqueta:Int!
-    idpost:Int!
-}
-input PostEtiquetaEdit{
-    idetiqueta:Int
-    idpost:Int
-}
+
 type Query{
     "Devuelve todos los Usuarios"
-    getUsuarios:[Usuarios]
+    getUsuarios(limit:Int):[Usuarios]
     "Devuelve un solo Usuario, el que ud defina"
     getUsuario(id:String!):Usuarios
     "Devuelve todas las Categorias"
-    getCategorias:[Categorias]
+    getCategorias(limit:Int):[Categorias]
     "Devuelve una sola categoria, el que ud defina"
     getCategoria(id:String!):Categorias
-    "Devuelve todas las Etiquetas"
-    getEtiquetas:[Etiquetas]
-    "Devuelve una sola Etiqueta, la que ud defina"
-    getEtiqueta(id:String!):Etiquetas
     "Devuelve todos los comentarios"
-    getComentarios:[Comentarios]
+    getComentarios(limit:Int):[Comentarios]
     "Devuelve un solo comentario, la que ud defina"
     getComentario(id:String!):Comentarios
     "Devuelve todos los posts"
-    getPosts:[Posts]
+    getPosts(limit:Int):[Posts]
     "Devuelve un solo post, la que ud defina"
     getPost(id:String!):Posts
-    "Devuelve todos los Post etiquetas"
-    getPostEtiquetas:[PostEtiquetas]
-    "Devuelve un solo Post Etiqueta por id"
-    getPostEtiqueta(id:String!):PostEtiquetas
+    
 }
 type Mutation{
     "Crear un Usuario"
@@ -136,12 +138,6 @@ type Mutation{
     editCategoria(id:String!, input: CategoriaEdit!):Categorias
     "Eliminar una categoria"
     deleteCategoria(id:String!):Categorias
-    "Crear una Etiqueta"
-    createEtiqueta(input: EtiquetaInput!):Etiquetas
-    "Editar una etiqueta"
-    editEtiqueta(id:String!, input: EtiquetaEdit!):Etiquetas
-    "Eliminar una etiqueta"
-    deleteEtiqueta(id:String!):Etiquetas
     "Crear un Comentario"
     createComentario(input: ComentarioInput!):Comentarios
     "Editar un Comentario"
@@ -154,8 +150,5 @@ type Mutation{
     editPost(id:String!,input:PostEdit!):Posts
     "Eliminar un Post"
     deletePost(id:String!):Posts
-    "Crear un Post Etiqueta"
-    createPostEtiqueta(input: PostEtiquetaInput ): PostEtiquetas
-    "Editar un Post Etiqueta"
-    editPostEtiqueta(id1:ID!,id2:ID!):PostEtiquetas
+    
     }

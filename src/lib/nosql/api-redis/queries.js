@@ -1,46 +1,67 @@
 'use strict'
-const redisConnection = require('../../../db/nosql/redis/db')
+const {redisConnection,deletes,get,getId,getkeys,set,getINcomentarios}  = require('../../../db/nosql/redis/db')
 const errores = require('../../errors')
-let redis
+
 module.exports = {
-    getUsuarios: async()=>{
+    getUsuarios: async(root,{limit})=>{
+        limit = limit != null ? limit : 0
         let usuarios = []
+        let usuariosaux = [] 
         let usuariosKey
         try {
-        redis = new redisConnection()
-        usuariosKey = await redis.getkeys('andres*')
+        usuariosKey = await getkeys('user.*')
         await usuariosKey.map(element => {
-            usuarios.push(redis.get(element))        
+            usuarios.push(get(element))        
         });
+
+        if(limit == 0 || limit> usuarios.length){
+            return usuarios
+        }else{
+
+            for(let i=0; i< limit; i++){
+                usuariosaux[i] = usuarios[i]
+            }
+            return usuariosaux
+        }
+        
         } catch (error) {
             console.log("error el realizar el get usuarios")
             errores(error)
         }
-        return usuarios   
+       
     },
     getUsuario: async(root,{id})=> {
         let usuario
         try {
-            redis = new redisConnection()
-            usuario = await redis.get(id)
-            console.log("usuarios", usuario)
+            usuario = await get(id)
         } catch (error) {
             console.log("Error al realizar getUsuaario")
             errores(error)
         } 
         return usuario
     },
-    getCategorias: async() => {
+    getCategorias: async(root,{limit}) => {
+        limit = limit !=null ? limit : 0
         let categorias = []
+        let categoriasaux = []
         let categoriasKey
 
         try {
-            redis = new redisConnection()
-            categoriasKey = await redis.getkeys('cat*')
+            categoriasKey = await getkeys('cat*')
 
             await categoriasKey.map(element => {
-                categorias.push(redis.get(element))
+                categorias.push(get(element))
             })
+
+            if(limit == 0 || limit> categorias.length){
+                return categorias
+            }else{
+    
+                for(let i=0; i< limit; i++){
+                    categoriasaux[i] = categorias[i]
+                }
+                return categoriasaux
+            }
             
         } catch (error) {
             console.log("Error al realizar get categoria")
@@ -52,99 +73,91 @@ module.exports = {
     getCategoria: async(root, {id})=>{
         let categoria
         try {
-            redis = new redisConnection()
-            categoria = await redis.get(id)
-            console.log("categorias", categoria)
+            
+            categoria = await get(id)
+            
             
         } catch (error) {
             console.log("Error al realizar GetCategoria")
         }
         return categoria
+    
     },
-    getEtiquetas: async() =>{
-        let etiquetas = []
-        let etiquetasKey
-        try {
-            redis = new redisConnection()
-            etiquetasKey = await redis.getkeys('eti*')
-            
-            await etiquetasKey.map(element => {
-                etiquetas.push(redis.get(element))
-            })
-            
-        } catch (error) {
-            console.log("Error al realizar get Etiquetas")
-            errores(error)
-        }
-        return etiquetas
-    },
-    getEtiqueta:async(root,{id})=>{
-        let etiqueta
-        try {
-            redis = new redisConnection()
-            etiqueta = await redis.get(id)
-            console.log("Etiqueta", etiqueta)
-        } catch (error) {
-            console.log("Error al realizar get Etiqueta")
-            errores(error)
-        }
-
-        return etiqueta
-    },
-    getComentarios: async()=> {
+    getComentarios: async(root,{limit})=> {
         let comentarios = []
+        let comentariosaux = []
         let comentariosKey
-
+        limit = limit != null ? limit : 0
         try {
-            redis = new redisConnection()
-            comentariosKey = await redis.getkeys('com*')
+           
+            comentariosKey = await getkeys('com*')
             await comentariosKey.map(element => {
-                comentarios.push(redis.get(element))
-                console.log("comentarios ", comentarios)
+                comentarios.push(get(element))
             })
+            console.log(comentarios.length)
+            if(limit == 0 || limit > comentarios.length){
+                return comentarios
+            }else{
+    
+                for(let i=0; i< limit; i++){
+                    comentariosaux[i] = comentarios[i]
+                }
+                return comentariosaux
+            }
             
         } catch (error) {
             console.log("Error al realizar get Comentarios")
             errores(error)
         }
         
-        return comentarios
+        
     },
     getComentario:async(root,{id})=>
     {
         let comentario
         try {
-            redis = new redisConnection()
-            comentario = await redis.get(id)
-            console.log("comentario", comentario)
+            
+            comentario = await get(id)
+            
         } catch (error) {
             console.log("Error al realizar get comentario")
         }
         return comentario
     },
-    getPosts:async()=>{
+    getPosts:async(root,{limit})=>{
         let posts = []
+        let postsaux = []
+        limit = limit!=null ? limit : 0
         let postskey
         try {
-            redis = new redisConnection()
-            postskey = await redis.getkeys('po*')
+            
+            postskey = await getkeys('po*')
             postskey.map(element =>{
-                posts.push(redis.get(element))
+                posts.push(get(element))
             })
+
+            if(limit == 0 || limit> posts.length){
+                return posts
+            }else{
+    
+                for(let i=0; i< limit; i++){
+                    postsaux[i] = posts[i]
+                }
+                return postsaux
+            }
+           
+        
             
         } catch (error) {
             console.log("Error al realizar")
             errores(error)
         }
 
-        return posts
     },
     getPost:async(root,{id})=>{
         let post
         try {
-            redis = new redisConnection()
-            post = await redis.get(id)
-            console.log("Post ", post)
+            post = await get(id)
         } catch (error) {
             console.log("Error al realizar get Post")
             errores(error)

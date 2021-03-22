@@ -42,6 +42,7 @@ let db = mongodb
       tempUserIds = postIds.slice(i, i+size)
      promises.push( await modelo.comentarios.then(posts => posts.find({postsid:{$in:tempUserIds}}).toArray()))
    }
+   console.log(promises)
    const promisesResult = await Promise.all(promises)
    promisesResult.forEach((tempComentarios)=>{
      tempComentarios.forEach((comentarios)=>{
