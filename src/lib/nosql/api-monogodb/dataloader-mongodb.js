@@ -55,6 +55,8 @@ let db = mongodb
   }catch(err){
 
   }
+
+  
 })
        
  const loaderPosts = new DataLoader(async(postsIds)=>{

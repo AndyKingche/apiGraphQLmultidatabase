@@ -5,7 +5,7 @@ const client = new cassandra.Client({
     localDataCenter: 'datacenter1',
     keyspace: 'keyspace1',
     pooling:{
-        maxRequestsPerConnection: 100000
+        maxRequestsPerConnection: 1000000
     }
   });
   const Mapper = cassandra.mapping.Mapper;
@@ -24,8 +24,36 @@ const model = {
     Categorias: mapper.forModel('Categorias'),
     Posts: mapper.forModel('Posts')
 }
+async function getComentarios(){
+  let numero = await client.execute('Select count(*) from comentarios').then(res => res.rows[0].count.low)
+  let comentarios = (await model.Comentarios.findAll({},{fetchSize:numero})).toArray()
+  return comentarios
+}
+
+let comentarios = getComentarios()
+async function getINcomentarios(Ids){
+  try {
+      let x = Ids.map(async(id) =>{ 
+          
+          return await comentarios.then(
+              res=> res.filter(comment=>
+                  comment.postsid == id
+              ))
+      }
+      )
+      return x
+      
+  } catch (error) {
+      console.log(error)
+  }
+
+       
+}
+
   module.exports = {
       Model : model,
-      Client:client
+      Client:client,
+     getINcomentarios:getINcomentarios
+
   }
 

@@ -6,7 +6,7 @@ type Usuarios {
     login: String!
     password: String!
     "Masculino: 'M' o Femenino: 'F'"
-    genero:String!
+    genero:String
 }
 input UsuarioInput {
     nombre: String!

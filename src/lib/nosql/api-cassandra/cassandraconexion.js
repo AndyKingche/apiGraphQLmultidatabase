@@ -4,6 +4,8 @@ const { readFile, readFileSync } = require('fs')
 const { join } = require('path')
 const resolvers = require('./resolver')
 
+
+        
 const typeDefs = readFileSync(
     join(
         __dirname,'schema.graphql'),'utf-8')

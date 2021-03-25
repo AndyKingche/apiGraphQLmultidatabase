@@ -3,7 +3,7 @@ const { dataloaderUsuarios, dataloaderComentarios, dataloaderPosts, dataloaderCa
 
 module.exports = {
     Comentarios :{
-        usuariosid: async({ usuariosid }) =>   dataloaderUsuarios.load(usuariosid),
+        usuariosid: async({ usuariosid }) =>   await dataloaderUsuarios.load(usuariosid),
         postsid: async({postsid})=> await dataloaderPosts.load(postsid)
     },ComentariosPost :{
         usuariosid: async({ usuariosid }) => await dataloaderUsuarios.load(usuariosid)
@@ -13,7 +13,7 @@ module.exports = {
         usuariosid: async ( {usuariosid} ) => await dataloaderUsuarios.load(usuariosid)
     },
     PostsComentario:{
-        categoriasid: async ( {categoriasid} ) => dataloaderCategoria.load(categoriasid),
-        usuariosid: async ( {usuariosid} ) => dataloaderUsuarios.load(usuariosid) }
+        categoriasid: async ( {categoriasid} ) => await dataloaderCategoria.load(categoriasid),
+        usuariosid: async ( {usuariosid} ) => await dataloaderUsuarios.load(usuariosid) }
 
 }
