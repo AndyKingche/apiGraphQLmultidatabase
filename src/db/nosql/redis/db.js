@@ -41,25 +41,19 @@ async function getcomentarios(){
     let comentarios = []
   let comentariosKey = await client.keys('com.*')
  
-  comentariosKey.map(element => {
-            
-           comentarios.push(client.hgetall(element))
-       })
-  comentarios = await Promise.all(comentarios)
-  return comentarios
+  comentarios = comentariosKey.map(element => client.hgetall(element))
+ 
+  return Promise.all(comentarios)
 }
 let comentarios = getcomentarios()
 async function getINcomentarios(Ids){
+    let allComentarios = await comentarios  
+    //console.log(allComentarios)
     try {
-        let x = Ids.map(async(id) =>{ 
-            
-            return await comentarios.then(
-                res=> res.filter(comment=>
-                    comment.postsid == id
-                ))
-        }
-        )
-        return x
+        let post = Ids.map(id =>
+                    allComentarios.filter(comment=>
+                    comment.postsid == id))
+        return post
         
     } catch (error) {
         console.log(error)

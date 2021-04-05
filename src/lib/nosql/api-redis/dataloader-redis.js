@@ -22,25 +22,29 @@ const loaderCategorias = new DataLoader(async(categoryIds)=>{
    const loaderComentarios = new DataLoader(async(postIds)=>{    
      
     try {
-
-  let promises = []
-   const size = 50000
-   let tempUserIds
-   for(let i = 0 ; i< postIds.length; i = i+size)
-   {
-    tempUserIds = postIds.slice(i, i+size)
+      const postsObj = postIds.reduce((prev,userId)=>{
+        prev[userId] = [];
+        return prev
+      }, {})
+   let promises = []
+   
+   promises = await getINcomentarios(postIds)
+   //return Promise.all(promises)
+  const promisesResult = await Promise.all(promises)
+   promisesResult.forEach((tempComentarios)=>{
+     
+     tempComentarios.forEach((comentarios)=>{
+     
+       postsObj[comentarios.postsid].push(comentarios)
+     })
+   });
     
-    promises = await getINcomentarios(tempUserIds)
-  }
-  
-
-    //const promisesResult = await Promise.all(promises)
-    
-   return await Promise.all(promises)
-
+   const result = postIds.map((postId)=> postsObj[postId])
+   return result ? result : []
  
     }catch(err){
-  
+
+      console.log(err)
     }
   });
          

@@ -2,6 +2,7 @@ const {Client,Model,getINcomentarios} = require('../../../db/nosql/cassandra/db'
 const DataLoader = require('dataloader');
 const model = require('../../../db/sql/model');
 const { query } = require('express');
+const { isCompositeType } = require('graphql');
 let db = Client
 let consultas = Model
 
@@ -42,10 +43,13 @@ const loaderComentarios = new DataLoader(
 async(postIds)=>{
     try {
     const query = 'Select * from comentarios where postsid = ? ALLOW FILTERING'
+   
       const post = postIds.map(id=>{
           return db.execute(query,[id]).then(res => res)
       })
+
       return Promise.all(post)
+     
        
           }catch(err){
         console.log(err)
